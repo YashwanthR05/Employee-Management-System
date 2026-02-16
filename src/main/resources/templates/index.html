@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Employee Management System</h2>
+
+<form id="employeeForm">
+    <!-- hidden field for update -->
+    <input type="hidden" id="empId">
+
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="text" id="department" placeholder="Department" required>
+    <input type="number" id="salary" placeholder="Salary" required>
+
+    <!-- Photo required only for Add (we’ll handle in JS) -->
+    <input type="file" id="photo">
+
+    <button type="submit" id="submitBtn">Add Employee</button>
+    <button type="button" id="cancelBtn" style="display:none;">Cancel Update</button>
+</form>
+
+<hr>
+
+<h3>Employee List</h3>
+<div id="employeeList"></div>
+
+<link rel="stylesheet" href="/style.css">
+
+
+
+<hr>
+
+<h3>Employee List</h3>
+<div id="employeeList"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

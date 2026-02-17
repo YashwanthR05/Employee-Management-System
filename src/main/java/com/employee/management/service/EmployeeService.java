@@ -47,6 +47,23 @@ public class EmployeeService {
 
         return repository.save(employee);
     }
+    
+    public List<Employee> searchByDepartment(String department) {
+        return repository.findByDepartmentIgnoreCase(department);
+    }
+
+    public List<Employee> searchByName(String name) {
+        return repository.findByNameContainingIgnoreCase(name);
+    }
+    
+    public Employee updateEmployeePhoto(int id, byte[] photoBytes) {
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        employee.setPhoto(photoBytes);
+        return repository.save(employee);
+    }
+
+
 
 
 }

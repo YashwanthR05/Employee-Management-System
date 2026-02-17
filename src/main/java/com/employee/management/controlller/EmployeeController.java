@@ -90,5 +90,33 @@ public class EmployeeController {
                                    @Valid @RequestBody Employee employee) {
         return service.updateEmployee(id, employee);
     }
+    
+    @GetMapping("/search")
+    public List<Employee> search(
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) String name
+    ) {
+        if (department != null && !department.trim().isEmpty()) {
+            return service.searchByDepartment(department.trim());
+        }
+        if (name != null && !name.trim().isEmpty()) {
+            return service.searchByName(name.trim());
+        }
+        return service.getAllEmployees();
+    }
+    
+    @PutMapping("/{id}/photo")
+    public Employee updatePhoto(
+            @PathVariable int id,
+            @RequestParam(value = "photo", required = false) MultipartFile photo
+    ) throws IOException {
+
+        if (photo == null || photo.isEmpty()) {
+            throw new com.employee.management.exception.BadRequestException("photo is required");
+        }
+        return service.updateEmployeePhoto(id, photo.getBytes());
+    }
+
+
 
 }

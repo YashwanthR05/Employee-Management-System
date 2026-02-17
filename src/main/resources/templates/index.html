@@ -1,43 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Employee Management</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Employee Management System</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<h2>Employee Management System</h2>
+<div class="container">
+  <h2>Employee Management System</h2>
 
-<form id="employeeForm">
-    <!-- hidden field for update -->
-    <input type="hidden" id="empId">
+  <!-- AUTH ONLY (shows first always) -->
+  <div class="card" id="authCard">
+    <h3 id="authTitle">Signup / Login</h3>
 
-    <input type="text" id="name" placeholder="Name" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="text" id="department" placeholder="Department" required>
-    <input type="number" id="salary" placeholder="Salary" required>
+    <div id="authInputs" class="grid2">
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password (min 6 chars)">
+    </div>
 
-    <!-- Photo required only for Add (we’ll handle in JS) -->
-    <input type="file" id="photo">
+    <div class="row" id="authButtons">
+      <button type="button" id="signupBtn" class="secondary">Sign Up</button>
+      <button type="button" id="loginBtn">Login</button>
+      <button type="button" id="logoutBtn" class="secondary" style="display:none;">Logout</button>
+    </div>
 
-    <button type="submit" id="submitBtn">Add Employee</button>
-    <button type="button" id="cancelBtn" style="display:none;">Cancel Update</button>
-</form>
+    <p class="hint" id="authHint">Signup first. Then login to manage employees.</p>
+    <div id="msg"></div>
+  </div>
 
-<hr>
+  <!-- CRUD AREA (hidden until login) -->
+  <div class="card" id="searchCard" style="display:none;">
+    <h3>Search</h3>
+    <div class="row">
+      <input type="text" id="deptSearch" placeholder="Search by Department (e.g., IT)">
+      <button type="button" id="searchBtn" class="secondary">Search</button>
+      <button type="button" id="clearSearchBtn" class="secondary">Clear</button>
+    </div>
+  </div>
 
-<h3>Employee List</h3>
-<div id="employeeList"></div>
+  <div class="card" id="formCard" style="display:none;">
+    <h3 id="formTitle">Add Employee</h3>
 
-<link rel="stylesheet" href="/style.css">
+    <form id="employeeForm">
+      <input type="hidden" id="empId">
 
+      <div class="grid2">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+      </div>
 
+      <div class="grid2">
+        <input type="text" id="department" placeholder="Department" required>
+        <input type="number" id="salary" placeholder="Salary" required>
+      </div>
 
-<hr>
+      <div class="row">
+        <label class="fileLabel">
+          <span id="photoLabel">Choose Photo</span>
+          <input type="file" id="photo" accept="image/*">
+        </label>
 
-<h3>Employee List</h3>
-<div id="employeeList"></div>
+        <button type="button" id="updatePhotoBtn" class="secondary" style="display:none;">
+          Update Photo
+        </button>
+      </div>
 
-<script src="script.js"></script>
+      <div class="row">
+        <button type="submit" id="submitBtn">Add Employee</button>
+        <button type="button" id="cancelBtn" class="secondary" style="display:none;">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card" id="listCard" style="display:none;">
+    <h3>Employees</h3>
+    <div id="employeeList"></div>
+  </div>
+
+</div>
+
+<script src="/script.js"></script>
 </body>
 </html>

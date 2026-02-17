@@ -10,7 +10,7 @@
 <div class="container">
   <h2>Employee Management System</h2>
 
-  <!-- AUTH ONLY (shows first always) -->
+  <!-- AUTH SECTION (Always visible first) -->
   <div class="card" id="authCard">
     <h3 id="authTitle">Signup / Login</h3>
 
@@ -25,11 +25,38 @@
       <button type="button" id="logoutBtn" class="secondary" style="display:none;">Logout</button>
     </div>
 
+    <div class="row">
+      <button type="button" id="showForgotBtn" class="linkBtn">Forgot Password?</button>
+    </div>
+
+    <!-- Forgot Password -->
+    <div class="card innerCard" id="forgotCard" style="display:none;">
+      <h4>Forgot Password</h4>
+      <div class="row">
+        <input type="text" id="forgotUsername" placeholder="Enter your username">
+        <button type="button" id="forgotBtn" class="secondary">Get Reset Token</button>
+      </div>
+      <p class="hint">For demo, token will be shown here. (In real apps it comes by email.)</p>
+    </div>
+
+    <!-- Reset Password -->
+    <div class="card innerCard" id="resetCard" style="display:none;">
+      <h4>Reset Password</h4>
+      <div class="grid2">
+        <input type="text" id="resetToken" placeholder="Paste reset token">
+        <input type="password" id="newPassword" placeholder="New password (min 6 chars)">
+      </div>
+      <div class="row">
+        <button type="button" id="resetBtn">Reset Password</button>
+        <button type="button" id="hideResetBtn" class="secondary">Close</button>
+      </div>
+    </div>
+
     <p class="hint" id="authHint">Signup first. Then login to manage employees.</p>
     <div id="msg"></div>
   </div>
 
-  <!-- CRUD AREA (hidden until login) -->
+  <!-- CRUD AREA (Hidden until login) -->
   <div class="card" id="searchCard" style="display:none;">
     <h3>Search</h3>
     <div class="row">

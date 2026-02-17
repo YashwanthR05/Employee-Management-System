@@ -17,6 +17,18 @@ const signupBtn = document.getElementById("signupBtn");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
+const showForgotBtn = document.getElementById("showForgotBtn");
+const forgotCard = document.getElementById("forgotCard");
+const resetCard = document.getElementById("resetCard");
+
+const forgotUsernameEl = document.getElementById("forgotUsername");
+const forgotBtn = document.getElementById("forgotBtn");
+
+const resetTokenEl = document.getElementById("resetToken");
+const newPasswordEl = document.getElementById("newPassword");
+const resetBtn = document.getElementById("resetBtn");
+const hideResetBtn = document.getElementById("hideResetBtn");
+
 const searchCard = document.getElementById("searchCard");
 const formCard = document.getElementById("formCard");
 const listCard = document.getElementById("listCard");
@@ -43,14 +55,14 @@ const updatePhotoBtn = document.getElementById("updatePhotoBtn");
 const formTitle = document.getElementById("formTitle");
 
 window.addEventListener("load", async () => {
-  // Strict: until login, show ONLY auth
   setLoggedInUI(false);
 
-  // If token exists from previous session, try load employees
   if (token) {
     const ok = await tryLoadEmployees();
-    if (ok) setLoggedInUI(true);
-    else {
+    if (ok) {
+      setLoggedInUI(true);
+      await loadEmployees();
+    } else {
       token = "";
       localStorage.removeItem("token");
       setLoggedInUI(false);
@@ -71,29 +83,30 @@ function escapeHtml(str) {
 
 function setLoggedInUI(isLoggedIn) {
   if (isLoggedIn) {
-    // show CRUD
     searchCard.style.display = "block";
     formCard.style.display = "block";
     listCard.style.display = "block";
 
-    // auth: show logout, hide signup/login inputs if you want
     logoutBtn.style.display = "inline-block";
     signupBtn.style.display = "none";
     loginBtn.style.display = "none";
     authInputs.style.display = "none";
+
     authTitle.textContent = "Logged In ✅";
     authHint.textContent = "You can manage employees now.";
+
+    forgotCard.style.display = "none";
+    resetCard.style.display = "none";
   } else {
-    // hide CRUD
     searchCard.style.display = "none";
     formCard.style.display = "none";
     listCard.style.display = "none";
 
-    // show signup/login
     logoutBtn.style.display = "none";
     signupBtn.style.display = "inline-block";
     loginBtn.style.display = "inline-block";
     authInputs.style.display = "grid";
+
     authTitle.textContent = "Signup / Login";
     authHint.textContent = "Signup first. Then login to manage employees.";
 
@@ -102,7 +115,7 @@ function setLoggedInUI(isLoggedIn) {
   }
 }
 
-// ---------- Signup (does NOT log in automatically) ----------
+/* ---------------- Signup ---------------- */
 signupBtn.addEventListener("click", async () => {
   clearMsg();
   const username = usernameEl.value.trim();
@@ -124,7 +137,7 @@ signupBtn.addEventListener("click", async () => {
   passwordEl.value = "";
 });
 
-// ---------- Login ----------
+/* ---------------- Login ---------------- */
 loginBtn.addEventListener("click", async () => {
   clearMsg();
   const username = usernameEl.value.trim();
@@ -149,7 +162,7 @@ loginBtn.addEventListener("click", async () => {
   await loadEmployees();
 });
 
-// ---------- Logout ----------
+/* ---------------- Logout ---------------- */
 logoutBtn.addEventListener("click", () => {
   token = "";
   localStorage.removeItem("token");
@@ -157,7 +170,62 @@ logoutBtn.addEventListener("click", () => {
   setMsgOk("Logged out.");
 });
 
-// ---------- Search ----------
+/* ---------------- Forgot/Reset UI Toggle ---------------- */
+showForgotBtn.addEventListener("click", () => {
+  forgotCard.style.display = forgotCard.style.display === "none" ? "block" : "none";
+  resetCard.style.display = "block";
+});
+
+hideResetBtn.addEventListener("click", () => {
+  resetCard.style.display = "none";
+});
+
+/* ---------------- Forgot Password ---------------- */
+forgotBtn.addEventListener("click", async () => {
+  clearMsg();
+  const username = forgotUsernameEl.value.trim();
+  if (!username) return setMsgErr("Enter username for reset token");
+
+  const res = await fetch("/auth/forgot-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username })
+  });
+
+  const text = await res.text();
+  if (!res.ok) return setMsgErr(text || "Failed to generate token");
+
+  setMsgOk(text);
+  // If response contains token, auto-fill token input
+  const parts = text.split(":");
+  if (parts.length > 1) {
+    resetTokenEl.value = parts[parts.length - 1].trim();
+  }
+});
+
+/* ---------------- Reset Password ---------------- */
+resetBtn.addEventListener("click", async () => {
+  clearMsg();
+  const tokenVal = resetTokenEl.value.trim();
+  const newPass = newPasswordEl.value.trim();
+
+  if (!tokenVal) return setMsgErr("Token is required");
+  if (newPass.length < 6) return setMsgErr("New password must be at least 6 characters");
+
+  const res = await fetch("/auth/reset-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: tokenVal, newPassword: newPass })
+  });
+
+  const text = await res.text();
+  if (!res.ok) return setMsgErr(text || "Reset failed");
+
+  setMsgOk(text + " Now login.");
+  newPasswordEl.value = "";
+});
+
+/* ---------------- Search ---------------- */
 searchBtn.addEventListener("click", async () => {
   const dep = deptSearchEl.value.trim();
   if (!dep) return loadEmployees();
@@ -169,13 +237,13 @@ clearSearchBtn.addEventListener("click", async () => {
   await loadEmployees();
 });
 
-// ---------- File label ----------
+/* ---------------- Photo label ---------------- */
 photoEl.addEventListener("change", () => {
   const file = photoEl.files[0];
   photoLabel.textContent = file ? file.name : "Choose Photo";
 });
 
-// ---------- Add / Update ----------
+/* ---------------- Add / Update Employee ---------------- */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearMsg();
@@ -228,7 +296,7 @@ form.addEventListener("submit", async (e) => {
 
 cancelBtn.addEventListener("click", () => resetForm());
 
-// ---------- Update Photo ----------
+/* ---------------- Update Photo ---------------- */
 updatePhotoBtn.addEventListener("click", async () => {
   clearMsg();
   const id = empIdEl.value;
@@ -254,7 +322,7 @@ updatePhotoBtn.addEventListener("click", async () => {
   await loadEmployees(deptSearchEl.value.trim());
 });
 
-// ---------- List actions ----------
+/* ---------------- List actions (Edit/Delete) ---------------- */
 employeeList.addEventListener("click", async (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
@@ -273,9 +341,7 @@ async function tryLoadEmployees() {
 
 async function loadEmployees(departmentSearch = "") {
   let url = "/employees";
-  if (departmentSearch) {
-    url = `/employees/search?department=${encodeURIComponent(departmentSearch)}`;
-  }
+  if (departmentSearch) url = `/employees/search?department=${encodeURIComponent(departmentSearch)}`;
 
   const res = await fetch(url, { headers: authHeaders() });
 
@@ -327,7 +393,6 @@ function renderEmployees(employees) {
 
 async function startEdit(id) {
   clearMsg();
-
   const res = await fetch(`/employees/${id}`, { headers: authHeaders() });
   if (!res.ok) return showError(res);
 
@@ -365,12 +430,10 @@ async function deleteEmployee(id) {
 function resetForm() {
   form.reset();
   empIdEl.value = "";
-
   submitBtn.textContent = "Add Employee";
   cancelBtn.style.display = "none";
   updatePhotoBtn.style.display = "none";
   formTitle.textContent = "Add Employee";
-
   photoEl.value = "";
   photoLabel.textContent = "Choose Photo";
 }

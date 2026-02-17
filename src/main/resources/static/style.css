@@ -98,3 +98,30 @@ button.danger { background: #e74c3c; }
   gap: 10px;
 }
 .fileLabel input[type="file"] { display: none; }
+
+/* ----- Extra for Auth + Reset UI ----- */
+.innerCard {
+  background: #fafafa;
+  border: 1px solid #eee;
+  box-shadow: none;
+  margin-top: 12px;
+}
+
+h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+button.linkBtn {
+  background: transparent;
+  color: #2a66d9;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button.linkBtn:hover {
+  text-decoration: underline;
+}
+

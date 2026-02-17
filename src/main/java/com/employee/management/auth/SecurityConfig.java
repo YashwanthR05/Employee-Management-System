@@ -54,12 +54,18 @@ public class SecurityConfig {
                 .requestMatchers("/", "/style.css", "/script.js").permitAll()
                 .requestMatchers("/auth/**").permitAll()
 
-                // ✅ IMPORTANT so <img> can display without token
+                // allow photo for <img>
                 .requestMatchers(HttpMethod.GET, "/employees/*/photo").permitAll()
 
+                // ✅ only ADMIN can delete
+                .requestMatchers(HttpMethod.DELETE, "/employees/**").hasRole("ADMIN")
+
+                // ✅ all other employee APIs need login
                 .requestMatchers("/employees/**").authenticated()
+
                 .anyRequest().authenticated()
         );
+
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

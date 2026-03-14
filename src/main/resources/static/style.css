@@ -1,127 +1,152 @@
-* { box-sizing: border-box; }
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6f9;
-  margin: 0;
-  padding: 20px;
-  color: #222;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Poppins", sans-serif;
 }
 
-.container { max-width: 950px; margin: 0 auto; }
-
-h2 { text-align: center; margin-bottom: 20px; color: #333; }
-h3 { margin: 0 0 12px 0; color: #333; }
-
-.card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 18px;
-  margin: 15px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#667eea,#764ba2);
 }
 
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+/* Container */
+.container{
+    width:90%;
+    max-width:900px;
 }
 
-.row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 12px;
-  flex-wrap: wrap;
+h2{
+    text-align:center;
+    color:white;
+    margin-bottom:25px;
+    font-size:30px;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  border-radius: 7px;
-  border: 1px solid #ccc;
+/* Glass Card */
+.card{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.2);
+    margin-bottom:20px;
+    border:1px solid rgba(255,255,255,0.2);
 }
 
-button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 7px;
-  background: #4CAF50;
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-}
-button:hover { opacity: 0.92; }
-button.secondary { background: #6c757d; }
-button.danger { background: #e74c3c; }
-
-.hint { color: #666; margin-top: 10px; font-size: 13px; }
-
-#msg { margin-top: 12px; font-size: 14px; }
-.msg-ok { color:#1f7a1f; background:#e7f6e7; padding:10px; border-radius:7px; border:1px solid #bde5bd; }
-.msg-err { color:#9b1c1c; background:#fde8e8; padding:10px; border-radius:7px; border:1px solid #f5bcbc; }
-
-.employee-card {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  padding: 12px;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  margin-top: 12px;
-  background: #fff;
+/* Inputs grid */
+.grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
 }
 
-.employee-card img {
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-  border: 2px solid #ddd;
-  object-fit: cover;
+/* Row */
+.row{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
 }
 
-.employee-details { flex: 1; }
-.employee-details p { margin: 4px 0; }
-
-.actions { display: flex; gap: 10px; }
-
-.fileLabel {
-  border: 1px dashed #bbb;
-  border-radius: 7px;
-  padding: 10px 12px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.fileLabel input[type="file"] { display: none; }
-
-/* ----- Extra for Auth + Reset UI ----- */
-.innerCard {
-  background: #fafafa;
-  border: 1px solid #eee;
-  box-shadow: none;
-  margin-top: 12px;
+/* Inputs */
+input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    outline:none;
+    font-size:14px;
+    background: rgba(255,255,255,0.8);
 }
 
-h4 {
-  margin: 0 0 10px 0;
-  color: #333;
+/* Focus effect */
+input:focus{
+    box-shadow:0 0 6px rgba(255,255,255,0.8);
 }
 
-button.linkBtn {
-  background: transparent;
-  color: #2a66d9;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
+/* Buttons */
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+    background:#4facfe;
+    color:white;
 }
 
-button.linkBtn:hover {
-  text-decoration: underline;
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
 
+/* Secondary button */
+.secondary{
+    background:#6c757d;
+}
+
+/* Danger button */
+.danger{
+    background:#e74c3c;
+}
+
+/* Link style */
+.linkBtn{
+    background:none;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+}
+
+/* Employee Card */
+.employee-card{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background: rgba(255,255,255,0.2);
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.employee-card img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* Details */
+.employee-details{
+    flex:1;
+    color:white;
+}
+
+/* Messages */
+.msg-ok{
+    background:#d4edda;
+    color:#155724;
+    padding:10px;
+    border-radius:6px;
+    margin-top:10px;
+}
+
+.msg-err{
+    background:#f8d7da;
+    color:#721c24;
+    padding:10px;
+    border-radius:6px;
+    margin-top:10px;
+}
+
+/* Hint text */
+.hint{
+    font-size:13px;
+    color:white;
+    margin-top:10px;
+}
